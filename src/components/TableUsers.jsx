@@ -12,7 +12,8 @@ export const TableUsers = () => {
 
     const getUsers = async () => {
         let res = await fetchAllUser()
-        if (res && res.data) setData(res.data.data)
+        console.log('🚀 ~ file: TableUsers.jsx:15 ~ getUsers ~ res:', res)
+        if (res && res.data) setData(res.data)
     }
 
     return (
