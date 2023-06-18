@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Container } from 'react-bootstrap'
 import Table from 'react-bootstrap/Table'
 import { fetchAllUser } from '../services/UserService'
 import ReactPaginate from 'react-paginate'
@@ -23,15 +22,11 @@ export const TableUsers = () => {
     }
 
     const handlePageClick = (event) => {
-        console.log(
-            '🚀 ~ file: TableUsers.jsx:27 ~ handlePageClick ~ event:',
-            event
-        )
         getUsers(+event.selected + 1)
     }
 
     return (
-        <Container>
+        <>
             <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -74,6 +69,6 @@ export const TableUsers = () => {
                 containerClassName='pagination'
                 activeClassName='active'
             />
-        </Container>
+        </>
     )
 }
