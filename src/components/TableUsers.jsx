@@ -2,11 +2,21 @@ import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table'
 import { fetchAllUser } from '../services/UserService'
 import ReactPaginate from 'react-paginate'
+import { ModalAddNew } from './ModalAddNew'
 
 export const TableUsers = () => {
     const [data, setData] = useState([])
     const [total, setTotal] = useState(0)
     const [totalPages, setTotalPages] = useState(0)
+
+    const [show, setShow] = useState(false)
+
+    const handleClose = () => setShow((prev) => !prev)
+    const handleShow = () => setShow((prev) => !prev)
+
+    const handleUpdateTable = (user) => {
+        setData((prev) => [user, ...prev])
+    }
 
     useEffect(() => {
         getUsers()
@@ -27,6 +37,14 @@ export const TableUsers = () => {
 
     return (
         <>
+            <div className='my-3 d-flex justify-content-between'>
+                <span>
+                    <b>List User</b>
+                </span>
+                <button className='btn btn-success' onClick={handleShow}>
+                    Add new user
+                </button>
+            </div>
             <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -68,6 +86,12 @@ export const TableUsers = () => {
                 breakLinkClassName='page-link'
                 containerClassName='pagination'
                 activeClassName='active'
+            />
+            <ModalAddNew
+                show={show}
+                handleClose={handleClose}
+                handleShow={handleShow}
+                handleUpdateTable={handleUpdateTable}
             />
         </>
     )
