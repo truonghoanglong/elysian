@@ -36,7 +36,12 @@ export const ModalEditUser = (props) => {
 
     return (
         <>
-            <Modal show={showModalEdit} onHide={handleClose}>
+            <Modal
+                show={showModalEdit}
+                onHide={handleClose}
+                backdrop='static'
+                keyboard={false}
+            >
                 <Modal.Header closeButton>
                     <Modal.Title>Edit User</Modal.Title>
                 </Modal.Header>

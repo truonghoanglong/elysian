@@ -4,6 +4,7 @@ import { fetchAllUser } from '../services/UserService'
 import ReactPaginate from 'react-paginate'
 import { ModalAddNew } from './ModalAddNew'
 import { ModalEditUser } from './ModalEditUser'
+import { ModelComfirm } from './ModalComfirm'
 import _ from 'lodash'
 
 export const TableUsers = () => {
@@ -13,17 +14,25 @@ export const TableUsers = () => {
 
     const [show, setShow] = useState(false)
     const [showModalEdit, setShowModelEdit] = useState(false)
+    const [showDelete, setShowDelete] = useState(false)
     const [dataUserEdit, setDataUserEdit] = useState({})
+    const [dataUserDelete, setDataUserDelete] = useState({})
 
     const handleClose = () => {
         setShowModelEdit(false)
         setShow(false)
+        setShowDelete(false)
     }
 
     const handleShow = () => setShow(true)
     const handleShowModelEdit = (item) => {
         setShowModelEdit(true)
         setDataUserEdit(item)
+    }
+
+    const handleShowModelDelete = (user) => {
+        setShowDelete(true)
+        setDataUserDelete(user)
     }
 
     const handleUpdateTable = (user) => {
@@ -35,6 +44,12 @@ export const TableUsers = () => {
         let index = data.findIndex((item) => item.id === user.id)
         cloneData[index].first_name = user.first_name
         cloneData[index].last_name = user.last_name
+        setData(cloneData)
+    }
+
+    const handleDeleteUserFromModal = (user) => {
+        let cloneData = _.cloneDeep(data)
+        cloneData = cloneData.filter((item) => item.id !== user.id)
         setData(cloneData)
     }
 
@@ -94,7 +109,12 @@ export const TableUsers = () => {
                                         >
                                             Edit
                                         </button>
-                                        <button className='btn btn-danger'>
+                                        <button
+                                            className='btn btn-danger'
+                                            onClick={() =>
+                                                handleShowModelDelete(item)
+                                            }
+                                        >
                                             Delete
                                         </button>
                                     </td>
@@ -132,6 +152,15 @@ export const TableUsers = () => {
                 handleClose={handleClose}
                 dataUserEdit={dataUserEdit}
                 handleEditUserFromModal={handleEditUserFromModal}
+            />
+
+            <ModelComfirm
+                showDelete={showDelete}
+                handleClose={handleClose}
+                dataUserDelete={dataUserDelete}
+                data={data}
+                setData={setData}
+                handleDeleteUserFromModal={handleDeleteUserFromModal}
             />
         </>
     )
