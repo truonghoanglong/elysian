@@ -21,13 +21,16 @@ export const TableUsers = () => {
 
     const handleShow = () => setShow(true)
     const handleShowModelEdit = (item) => {
-        console.log(item)
         setShowModelEdit(true)
         setDataUserEdit(item)
     }
 
     const handleUpdateTable = (user) => {
         setData((prev) => [user, ...prev])
+    }
+
+    const handleEditUserFromModal = (user) => {
+        console.log(user)
     }
 
     useEffect(() => {
@@ -123,6 +126,7 @@ export const TableUsers = () => {
                 showModalEdit={showModalEdit}
                 handleClose={handleClose}
                 dataUserEdit={dataUserEdit}
+                handleEditUserFromModal={handleEditUserFromModal}
             />
         </>
     )
