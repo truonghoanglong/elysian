@@ -4,6 +4,7 @@ import { fetchAllUser } from '../services/UserService'
 import ReactPaginate from 'react-paginate'
 import { ModalAddNew } from './ModalAddNew'
 import { ModalEditUser } from './ModalEditUser'
+import _ from 'lodash'
 
 export const TableUsers = () => {
     const [data, setData] = useState([])
@@ -30,7 +31,11 @@ export const TableUsers = () => {
     }
 
     const handleEditUserFromModal = (user) => {
-        console.log(user)
+        let cloneData = _.cloneDeep(data)
+        let index = data.findIndex((item) => item.id === user.id)
+        cloneData[index].first_name = user.first_name
+        cloneData[index].last_name = user.last_name
+        setData(cloneData)
     }
 
     useEffect(() => {

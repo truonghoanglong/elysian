@@ -19,10 +19,12 @@ export const ModalEditUser = (props) => {
         if (res && res.updatedAt) {
             handleEditUserFromModal({
                 first_name: name,
+                last_name: job,
                 id: dataUserEdit.id
             })
+            handleClose()
+            toast.success('Edit Thành Công')
         }
-        console.log(res)
     }
 
     useEffect(() => {

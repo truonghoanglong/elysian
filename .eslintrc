@@ -1,6 +1,6 @@
 {
     "extends": ["react-app", "prettier"],
-    "plugins": ["react", "prettier"],
+    "plugins": ["react", "prettier", "lodash"],
     "rules": {
         "prettier/prettier": [
             "warn",
