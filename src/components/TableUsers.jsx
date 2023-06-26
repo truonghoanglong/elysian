@@ -6,17 +6,31 @@ import { ModalAddNew } from './ModalAddNew'
 import { ModalEditUser } from './ModalEditUser'
 import { ModelComfirm } from './ModalComfirm'
 import _ from 'lodash'
+import { debounce } from 'lodash'
 
 export const TableUsers = () => {
     const [data, setData] = useState([])
     const [total, setTotal] = useState(0)
     const [totalPages, setTotalPages] = useState(0)
-
     const [show, setShow] = useState(false)
     const [showModalEdit, setShowModelEdit] = useState(false)
     const [showDelete, setShowDelete] = useState(false)
     const [dataUserEdit, setDataUserEdit] = useState({})
     const [dataUserDelete, setDataUserDelete] = useState({})
+    const [sortBy, setSortBy] = useState('asc')
+    const [fieldSort, setfieldSort] = useState('id')
+
+    const handleSort = (sortBy, fieldSort) => {
+        setSortBy(sortBy)
+        setfieldSort(fieldSort)
+        let cloneData = _.cloneDeep(data)
+        cloneData = _.orderBy(cloneData, [fieldSort], [sortBy])
+        setData(cloneData)
+    }
+
+    useEffect(() => {
+        getUsers()
+    }, [])
 
     const handleClose = () => {
         setShowModelEdit(false)
@@ -53,10 +67,6 @@ export const TableUsers = () => {
         setData(cloneData)
     }
 
-    useEffect(() => {
-        getUsers()
-    }, [])
-
     const getUsers = async (page) => {
         let res = await fetchAllUser(page)
         if (res && res.data) {
@@ -70,6 +80,18 @@ export const TableUsers = () => {
         getUsers(+event.selected + 1)
     }
 
+    const handleOnChangeKeyword = debounce((event) => {
+        let key = event.target.value
+        if (key) {
+            console.log('crack')
+            let cloneData = _.cloneDeep(data)
+            cloneData = cloneData.filter((item) => item.email.includes(key))
+            setData(cloneData)
+        } else {
+            getUsers(1)
+        }
+    }, 500)
+
     return (
         <>
             <div className='my-3 d-flex justify-content-between'>
@@ -80,14 +102,92 @@ export const TableUsers = () => {
                     Add new user
                 </button>
             </div>
+            <div className='col-4 my-3'>
+                <input
+                    className='form-control'
+                    type='text'
+                    placeholder='Search user by email'
+                    onChange={(event) => handleOnChangeKeyword(event)}
+                />
+            </div>
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Email</th>
-                        <th>Frist Name</th>
-                        <th>Last Name</th>
-                        <th>Action</th>
+                        <th>
+                            <div className='d-flex justify-content-around'>
+                                <span>#</span>
+                                <span>
+                                    <i
+                                        className='fa-solid fa-arrow-up'
+                                        onClick={() => handleSort('desc', 'id')}
+                                    ></i>
+                                    <i
+                                        className='fa-solid fa-arrow-down'
+                                        onClick={() => handleSort('esc', 'id')}
+                                    ></i>
+                                </span>
+                            </div>
+                        </th>
+                        <th>
+                            <div className='d-flex justify-content-around'>
+                                <span>Email</span>
+                                <span>
+                                    <i
+                                        className='fa-solid fa-arrow-up'
+                                        onClick={() =>
+                                            handleSort('desc', 'email')
+                                        }
+                                    ></i>
+                                    <i
+                                        className='fa-solid fa-arrow-down'
+                                        onClick={() =>
+                                            handleSort('esc', 'email')
+                                        }
+                                    ></i>
+                                </span>
+                            </div>
+                        </th>
+                        <th>
+                            <div className='d-flex justify-content-around'>
+                                <span>Frist Name</span>
+                                <span>
+                                    <i
+                                        className='fa-solid fa-arrow-up'
+                                        onClick={() =>
+                                            handleSort('desc', 'first_name')
+                                        }
+                                    ></i>
+                                    <i
+                                        className='fa-solid fa-arrow-down'
+                                        onClick={() =>
+                                            handleSort('esc', 'first_name')
+                                        }
+                                    ></i>
+                                </span>
+                            </div>
+                        </th>
+                        <th>
+                            <div className='d-flex justify-content-around'>
+                                <span>Last Name</span>
+                                <span>
+                                    <i
+                                        className='fa-solid fa-arrow-up'
+                                        onClick={() =>
+                                            handleSort('desc', 'last_name')
+                                        }
+                                    ></i>
+                                    <i
+                                        className='fa-solid fa-arrow-down'
+                                        onClick={() =>
+                                            handleSort('esc', 'last_name')
+                                        }
+                                    ></i>
+                                </span>
+                            </div>
+                        </th>
+                        <th className='d-flex justify-content-around'>
+                            Action
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
