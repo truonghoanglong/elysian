@@ -7,6 +7,7 @@ import { ModalEditUser } from './ModalEditUser'
 import { ModelComfirm } from './ModalComfirm'
 import _ from 'lodash'
 import { debounce } from 'lodash'
+import { CSVLink } from 'react-csv'
 
 export const TableUsers = () => {
     const [data, setData] = useState([])
@@ -98,9 +99,33 @@ export const TableUsers = () => {
                 <span>
                     <b>List User</b>
                 </span>
-                <button className='btn btn-success' onClick={handleShow}>
-                    Add new user
-                </button>
+                <div className=''>
+                    <label
+                        htmlFor='import'
+                        type='button'
+                        className='btn btn-warning'
+                    >
+                        <i className='fa-solid fa-file-import mx-1'></i>
+                        Import
+                    </label>
+                    <input type='file' id='import' hidden />
+
+                    <CSVLink
+                        className='btn btn-info mx-1'
+                        data={data}
+                        filename={'datauser.csv'}
+                    >
+                        <i className='fa-solid fa-download mx-1'></i>
+                        Export
+                    </CSVLink>
+                    <button
+                        className='btn btn-success mx-1'
+                        onClick={handleShow}
+                    >
+                        <i className='fa-solid fa-plus'></i>
+                        Add new user
+                    </button>
+                </div>
             </div>
             <div className='col-4 my-3'>
                 <input
