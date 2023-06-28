@@ -8,6 +8,8 @@ import { ModelComfirm } from './ModalComfirm'
 import _ from 'lodash'
 import { debounce } from 'lodash'
 import { CSVLink } from 'react-csv'
+import Papa from 'papaparse'
+import { toast } from 'react-toastify'
 
 export const TableUsers = () => {
     const [data, setData] = useState([])
@@ -93,6 +95,54 @@ export const TableUsers = () => {
         }
     }, 500)
 
+    const handleimportCSV = (event) => {
+        if (event.target && event.target.files && event.target.files[0]) {
+            let file = event.target.files[0]
+
+            if (file.type !== 'text/csv') {
+                toast.error('only accept csv file...')
+            }
+
+            Papa.parse(file, {
+                // header: true,
+                complete: function (results) {
+                    let rawCSV = results.data
+                    if (rawCSV.length > 0) {
+                        if (rawCSV[0] && rawCSV[0].length === 5) {
+                            if (
+                                rawCSV[0][0] !== 'id' ||
+                                rawCSV[0][1] !== 'email' ||
+                                rawCSV[0][2] !== 'first_name' ||
+                                rawCSV[0][3] !== 'last_name' ||
+                                rawCSV[0][4] !== 'avatar'
+                            ) {
+                                toast.error('Wrong found header on CSV file !')
+                            } else {
+                                let result = []
+                                rawCSV.map((item, index) => {
+                                    if (index > 0) {
+                                        let obj = {}
+                                        obj.id = item[0]
+                                        obj.email = item[1]
+                                        obj.first_name = item[2]
+                                        obj.last_name = item[3]
+                                        obj.avatar = item[4]
+                                        result.push(obj)
+                                    }
+                                })
+                                setData(result)
+                            }
+                        } else {
+                            toast.error('Wrong found data on CSV file !!')
+                        }
+                    } else {
+                        toast.error('Not found data on CSV file !!!')
+                    }
+                }
+            })
+        }
+    }
+
     return (
         <>
             <div className='my-3 d-flex justify-content-between'>
@@ -108,12 +158,19 @@ export const TableUsers = () => {
                         <i className='fa-solid fa-file-import mx-1'></i>
                         Import
                     </label>
-                    <input type='file' id='import' hidden />
+                    <input
+                        type='file'
+                        id='import'
+                        hidden
+                        onChange={(event) => {
+                            handleimportCSV(event)
+                        }}
+                    />
 
                     <CSVLink
                         className='btn btn-info mx-1'
                         data={data}
-                        filename={'datauser.csv'}
+                        filename={'dataUser.csv'}
                     >
                         <i className='fa-solid fa-download mx-1'></i>
                         Export
