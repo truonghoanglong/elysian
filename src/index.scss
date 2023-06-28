@@ -25,3 +25,69 @@ button i {
     color: #fff;
     text-decoration: none;
 }
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    .title {
+        text-align: center;
+        font-size: 23px;
+        font-weight: 600;
+        padding-top: 30px;
+    }
+    .text {
+        font-weight: 600;
+        margin-top: 3px;
+        margin-bottom: 7px;
+    }
+    input {
+        padding: 12px 20px;
+        outline: 5px;
+        margin-bottom: 7px;
+        background: #1618230f;
+        border: none;
+        margin-top: 5px;
+        border-radius: 5px;
+        width: 100%;
+        &:hover {
+            background-color: #ececec;
+        }
+    }
+    .input-password {
+        position: relative;
+        i {
+            position: absolute;
+            cursor: pointer;
+            top: 50%;
+            right: 0;
+            transform: translateX(-50%) translateY(-50%);
+        }
+    }
+    button {
+        padding: 8px;
+        border-radius: 5px;
+        outline: none;
+        border: none;
+        margin-top: 12px;
+        color: #000;
+        background-color: #ececec;
+        &.active {
+            background-color: #fe2c55;
+            color: #ffff;
+        }
+    }
+    button:disabled,
+    button[disabled] {
+        cursor: not-allowed;
+        background-color: #f3f3f3;
+    }
+    .back {
+        text-align: center;
+        margin-top: 20px;
+        cursor: pointer;
+        i {
+            margin-right: 10px;
+        }
+    }
+}

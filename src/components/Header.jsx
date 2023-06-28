@@ -27,12 +27,12 @@ export const Header = () => {
                                 title='Setting'
                                 id='basic-nav-dropdown'
                             >
-                                <NavDropdown.Item href='/login'>
+                                <NavLink className='nav-link' to='/login'>
                                     Login
-                                </NavDropdown.Item>
-                                <NavDropdown.Item href='/logout'>
+                                </NavLink>
+                                <NavLink className='nav-link' to='/logout'>
                                     Log Out
-                                </NavDropdown.Item>
+                                </NavLink>
                             </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>
