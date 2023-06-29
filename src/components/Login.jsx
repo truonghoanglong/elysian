@@ -1,11 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { loginApi } from '../services/UserService'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 export const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [showPassowrd, setShowPassword] = useState(false)
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        let token = localStorage.getItem('token')
+        if (token) {
+            navigate('/')
+        }
+    })
+
+    const navigate = useNavigate()
 
     const handleShowPassword = () => {
         setShowPassword((prev) => !prev)
@@ -15,11 +26,19 @@ export const Login = () => {
         if (!email || !password) {
             toast.error('Email/Password is required !')
         }
+        setLoading(true)
         let res = await loginApi(email, password)
         console.log('🚀 ~ file: Login.jsx:19 ~ handleLogin ~ res:', res)
         if (res && res.token) {
             localStorage.setItem('token', res.token)
+            navigate('/')
+            toast.success('Login success')
+        } else {
+            if (res && res.status === 400) {
+                toast.error(res.data.error)
+            }
         }
+        setLoading(false)
     }
 
     return (
@@ -57,7 +76,8 @@ export const Login = () => {
                 disabled={email && password ? false : true}
                 onClick={() => handleLogin(email, password)}
             >
-                Login
+                {loading && <i className='fa-solid fa-sync fa-spin'></i>}
+                &nbsp;Login
             </button>
             <div className='back'>
                 <i className='fa-solid fa-angles-left'></i>
