@@ -1,22 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { loginApi } from '../services/UserService'
 import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { UserContext } from '../context/UserContext'
 
 export const Login = () => {
+    const { loginContext } = useContext(UserContext)
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [showPassowrd, setShowPassword] = useState(false)
     const [loading, setLoading] = useState(false)
-
-    useEffect(() => {
-        let token = localStorage.getItem('token')
-        if (token) {
-            navigate('/')
-        }
-    })
-
     const navigate = useNavigate()
+
+    // useEffect(() => {
+    //     let token = localStorage.getItem('token')
+    //     if (token) {
+    //         navigate('/')
+    //     }
+    // })
 
     const handleShowPassword = () => {
         setShowPassword((prev) => !prev)
@@ -30,9 +32,8 @@ export const Login = () => {
         let res = await loginApi(email, password)
         console.log('🚀 ~ file: Login.jsx:19 ~ handleLogin ~ res:', res)
         if (res && res.token) {
-            localStorage.setItem('token', res.token)
+            loginContext(email, res.token)
             navigate('/')
-            toast.success('Login success')
         } else {
             if (res && res.status === 400) {
                 toast.error(res.data.error)
@@ -44,7 +45,7 @@ export const Login = () => {
     return (
         <div className='login-container col-12 col-sm-4'>
             <div className='title'>Login</div>
-            <div className='text'>Email or UserNam</div>
+            <div className='text'>Email or UserNam (eve.holt@reqres.in)</div>
             <input
                 type='text'
                 placeholder='Email or usernam...'
@@ -81,7 +82,9 @@ export const Login = () => {
             </button>
             <div className='back'>
                 <i className='fa-solid fa-angles-left'></i>
-                Go back
+                <Link to='/' style={{ color: 'black', textDecoration: 'none' }}>
+                    Go back
+                </Link>
             </div>
         </div>
     )
