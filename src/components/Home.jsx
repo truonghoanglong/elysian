@@ -16,6 +16,11 @@ export const Home = () => {
                 <li>8. import User từ file .csv</li>
                 <li>9. Export User ra file .csv</li>
             </ul>
+            <span>
+                <b>Tài Khoản</b> <br />
+            </span>
+            <span>Email: eve.holt@reqres.in</span> <br />
+            <span>Password:"cityslicka" or :any</span>
         </div>
     )
 }
